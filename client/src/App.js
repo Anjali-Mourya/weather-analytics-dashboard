@@ -27,7 +27,7 @@ function App() {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get(`http://localhost:5000/api/weather/${city}`);
+     const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/weather/${city}`);
       setWeather(res.data);
     } catch (err) {
       setError('City not found or server error. Please try again.');
