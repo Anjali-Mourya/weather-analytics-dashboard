@@ -29,7 +29,7 @@ function App() {
   setError(null);
 
   // Debug: show exactly what URL is used
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
   const fullUrl = `${API_BASE}/api/weather/${city}`;
   console.log('Frontend is sending request to:', fullUrl);
 
