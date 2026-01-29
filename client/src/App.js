@@ -28,15 +28,29 @@ function App() {
   setLoading(true);
   setError(null);
 
-  // Use VITE_API_BASE_URL if it exists (production), otherwise fallback to localhost
+  // Debug: show exactly what URL is used
   const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+  const fullUrl = `${API_BASE}/api/weather/${city}`;
+  console.log('Frontend is sending request to:', fullUrl);
 
   try {
-    const res = await axios.get(`${API_BASE}/api/weather/${city}`);
+    const res = await axios.get(fullUrl);
+    console.log('Backend response status:', res.status);
+    console.log('Backend response data:', res.data);
+
+    // If backend sent an error object
+    if (res.data.error) {
+      throw new Error(res.data.error);
+    }
+
     setWeather(res.data);
   } catch (err) {
-    setError('City not found or server error. Please try again.');
-    console.error(err);
+    console.error('Frontend API error:', err.message);
+    if (err.response) {
+      console.error('Response status:', err.response.status);
+      console.error('Response data:', err.response.data);
+    }
+    setError(err.message || 'City not found or server error. Please try again.');
   } finally {
     setLoading(false);
   }
