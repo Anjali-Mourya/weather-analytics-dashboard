@@ -23,19 +23,24 @@ function App() {
   const [error, setError] = useState(null);
 
   const fetchWeather = async () => {
-    if (!city.trim()) return;
-    setLoading(true);
-    setError(null);
-    try {
-     const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/weather/${city}`);
-      setWeather(res.data);
-    } catch (err) {
-      setError('City not found or server error. Please try again.');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (!city.trim()) return;
+
+  setLoading(true);
+  setError(null);
+
+  // Use VITE_API_BASE_URL if it exists (production), otherwise fallback to localhost
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
+  try {
+    const res = await axios.get(`${API_BASE}/api/weather/${city}`);
+    setWeather(res.data);
+  } catch (err) {
+    setError('City not found or server error. Please try again.');
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const dailyData = weather ? weather.list.filter((_, i) => i % 8 === 0) : [];
 

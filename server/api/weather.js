@@ -12,9 +12,7 @@ router.get('/:city', async (req, res) => {
       `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
     );
     const data = response.data;
-
     await Search.findOneAndUpdate({ city }, { city, data }, { upsert: true, new: true });
-
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: 'City not found!' });
@@ -27,7 +25,7 @@ router.get('/history', async (req, res) => {
     res.json(history);
   } catch (err) {
     console.error('History error:', err);
-    res.status(500).json([]); // Return empty array instead of crashing
+    res.status(500).json([]); 
   }
 });
 
